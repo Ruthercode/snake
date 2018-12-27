@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"os/exec"
@@ -9,6 +10,7 @@ import (
 
 var ycor int
 var xcor int
+var dir string
 
 func draw() {
 	for i := 0; i < 29; i++ {
@@ -37,12 +39,44 @@ func clear() {
 	bash.Stdout = os.Stdout
 	bash.Run()
 }
+
+// not real-time input
+func move() {
+	r := bufio.NewReader(os.Stdin)
+	c, err := r.ReadByte()
+	if err != nil {
+		panic(err)
+	}
+	dir = string(c)
+	switch dir {
+	case "w":
+		ycor -= 1
+	case "s":
+		ycor += 1
+	case "a":
+		xcor -= 1
+	case "d":
+		xcor += 1
+	}
+
+	if xcor == 29 {
+		xcor = 1
+	} else if xcor == 0 {
+		xcor = 28
+	}
+	if ycor == 29 {
+		ycor = 1
+	} else if ycor == 0 {
+		ycor = 28
+	}
+}
 func main() {
 	ycor = 15
 	xcor = 15
 	for true {
+		move()
 		clear()
 		draw()
-		time.Sleep(time.Second * 2)
+		time.Sleep(time.Second * 1)
 	}
 }
