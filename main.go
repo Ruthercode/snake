@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"os/exec"
 	"time"
 )
 
@@ -29,10 +31,17 @@ func draw() {
 		fmt.Print("#")
 	}
 }
+
+func clear() {
+	bash := exec.Command("clear")
+	bash.Stdout = os.Stdout
+	bash.Run()
+}
 func main() {
 	ycor = 15
 	xcor = 15
 	for true {
+		clear()
 		draw()
 		time.Sleep(time.Second * 2)
 	}
