@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"os/exec"
 	"time"
 
 	"./tools"
@@ -17,21 +16,22 @@ var (
 	foodAvbl int = 0
 	foodX    int
 	foodY    int
+	score    int = 0
 )
 
 func draw() {
-	for i := 0; i < 29; i++ {
+	for i := 0; i < 30; i++ {
 		fmt.Print("#")
 	}
 	fmt.Println("#")
-	for i := 0; i < 28; i++ {
+
+	for i := 1; i < 30; i++ {
 		fmt.Print("#")
-		for j := 0; j < 28; j++ {
+		for j := 1; j < 30; j++ {
 			if j == xcor && i == ycor {
 				fmt.Print("O")
 			} else if i == foodY && j == foodX {
 				fmt.Print("F")
-				foodAvbl++
 			} else {
 				fmt.Print(" ")
 			}
@@ -42,12 +42,9 @@ func draw() {
 	for i := 0; i < 30; i++ {
 		fmt.Print("#")
 	}
-}
+	fmt.Println("#")
 
-func clear() {
-	bash := exec.Command("clear")
-	bash.Stdout = os.Stdout
-	bash.Run()
+	fmt.Print("You score is ", score)
 }
 
 // not real-time input
@@ -69,15 +66,22 @@ func move() {
 		xcor += 1
 	}
 
-	if xcor == 29 {
-		xcor = 1
-	} else if xcor == 0 {
-		xcor = 28
+	if xcor == foodX && ycor == foodY {
+		foodAvbl = 0
+		score++
 	}
-	if ycor == 29 {
+
+	if xcor == 30 {
+		xcor = 1
+	}
+	if xcor == 0 {
+		xcor = 29
+	}
+	if ycor == 30 {
 		ycor = 1
-	} else if ycor == 0 {
-		ycor = 28
+	}
+	if ycor == 0 {
+		ycor = 29
 	}
 }
 func food() {
@@ -93,8 +97,8 @@ func main() {
 	for true {
 		food()
 		move()
-		clear()
+		tools.Clear()
 		draw()
-		time.Sleep(time.Second * 1)
+		time.Sleep(time.Millisecond * 100)
 	}
 }
