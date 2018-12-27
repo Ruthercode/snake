@@ -3,10 +3,11 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"math/rand"
 	"os"
 	"os/exec"
 	"time"
+
+	"github.com/Ruthercode/edu/tools"
 )
 
 var (
@@ -17,11 +18,6 @@ var (
 	foodX    int
 	foodY    int
 )
-
-func randInt(min int, max int) int {
-	rand.Seed(time.Now().UTC().UnixNano())
-	return min + rand.Intn(max-min)
-}
 
 func draw() {
 	for i := 0; i < 29; i++ {
