@@ -1,6 +1,9 @@
-package tools 
+package tools
 
-import "math/rand"
+import (
+	"math/rand"
+	"time"
+)
 
 func randInt(min int, max int) int {
 	rand.Seed(time.Now().UTC().UnixNano())
