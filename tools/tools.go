@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func randInt(min int, max int) int {
+func RandInt(min int, max int) int {
 	rand.Seed(time.Now().UTC().UnixNano())
 	return min + rand.Intn(max-min)
 }

@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/Ruthercode/edu/tools"
+	tools "github.com/Ruthercode/edu/tools"
 )
 
 var (
@@ -82,8 +82,8 @@ func move() {
 }
 func food() {
 	if foodAvbl == 0 {
-		foodX = randInt(1, 29)
-		foodY = randInt(1, 29)
+		foodX = tools.RandInt(1,29)
+		foodY = tools.RandInt(1,29)
 		foodAvbl++
 	}
 }
