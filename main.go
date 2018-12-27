@@ -3,14 +3,25 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math/rand"
 	"os"
 	"os/exec"
 	"time"
 )
 
-var ycor int
-var xcor int
-var dir string
+var (
+	ycor     int
+	xcor     int
+	dir      string
+	foodAvbl int = 0
+	foodX    int
+	foodY    int
+)
+
+func randInt(min int, max int) int {
+	rand.Seed(time.Now().UTC().UnixNano())
+	return min + rand.Intn(max-min)
+}
 
 func draw() {
 	for i := 0; i < 29; i++ {
@@ -22,6 +33,9 @@ func draw() {
 		for j := 0; j < 28; j++ {
 			if j == xcor && i == ycor {
 				fmt.Print("O")
+			} else if i == foodY && j == foodX {
+				fmt.Print("F")
+				foodAvbl++
 			} else {
 				fmt.Print(" ")
 			}
@@ -70,10 +84,18 @@ func move() {
 		ycor = 28
 	}
 }
+func food() {
+	if foodAvbl == 0 {
+		foodX = randInt(1, 29)
+		foodY = randInt(1, 29)
+		foodAvbl++
+	}
+}
 func main() {
 	ycor = 15
 	xcor = 15
 	for true {
+		food()
 		move()
 		clear()
 		draw()
