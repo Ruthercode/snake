@@ -1,12 +1,12 @@
 package main
 
 import (
+	"./tools"
 	"bufio"
 	"fmt"
+//	"golang.org/x/mobile/event/key"
 	"os"
 	"time"
-
-	"./tools"
 )
 
 var (
@@ -21,6 +21,7 @@ var (
 	y_tail       = make([]int, 1)
 	gps_x        = make([]int, 1)
 	gps_y        = make([]int, 1)
+	
 )
 
 func tail_move() {
@@ -72,14 +73,18 @@ func draw() {
 	fmt.Print("You score is ", score)
 }
 
-// not real-time input
-func move() {
+func input() {
+	
 	r := bufio.NewReader(os.Stdin)
 	c, err := r.ReadByte()
 	if err != nil {
 		panic(err)
 	}
 	dir = string(c)
+}
+
+// not real-time input
+func move() {
 
 	switch dir {
 	case "w":
@@ -146,12 +151,14 @@ func food() {
 	}
 }
 func main() {
+	
 	ycor = 15
 	xcor = 15
 	for true {
 		food()
 		tail_move()
 		move()
+		input()
 		tools.Clear()
 		draw()
 		time.Sleep(time.Millisecond * 100)

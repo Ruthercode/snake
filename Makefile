@@ -1,16 +1,16 @@
 commit := $(shell git rev-parse --short HEAD)
 
-all: fmt build
+all: fmt build run
 
 fmt:
 	go fmt main.go
 
 build:
 	echo $(commit)
-	go build main.go
+	go build 
 
 run:
-	./main
+	./edu
 
 clear:
-	rm ./main
+	rm ./edu
