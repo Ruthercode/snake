@@ -2,10 +2,8 @@ package main
 
 import (
 	"./tools"
-	"bufio"
 	"fmt"
-//	"golang.org/x/mobile/event/key"
-	"os"
+	"github.com/eiannone/keyboard"
 	"time"
 )
 
@@ -21,7 +19,6 @@ var (
 	y_tail       = make([]int, 1)
 	gps_x        = make([]int, 1)
 	gps_y        = make([]int, 1)
-	
 )
 
 func tail_move() {
@@ -74,13 +71,12 @@ func draw() {
 }
 
 func input() {
-	
-	r := bufio.NewReader(os.Stdin)
-	c, err := r.ReadByte()
+
+	char, _, err := keyboard.GetSingleKey()
 	if err != nil {
 		panic(err)
 	}
-	dir = string(c)
+	dir = string(char)
 }
 
 // not real-time input
@@ -97,39 +93,6 @@ func move() {
 		xcor += 1
 	}
 
-	gps_x = append(gps_x, xcor)
-	gps_y = append(gps_y, ycor)
-
-	if xcor == foodX && ycor == foodY {
-		foodAvbl = 0
-		if x_tail[0] == 0 {
-			x_tail[0] = xcor
-			y_tail[0] = ycor
-			if dir == "w" {
-				y_tail[0]++
-			} else if dir == "s" {
-				y_tail[0]--
-			} else if dir == "a" {
-				x_tail[0]++
-			} else if dir == "d" {
-				x_tail[0]--
-			}
-		} else {
-			x_tail = append(x_tail, xcor)
-			y_tail = append(y_tail, ycor)
-			if dir == "w" {
-				y_tail[score]++
-			} else if dir == "s" {
-				y_tail[score]--
-			} else if dir == "a" {
-				x_tail[score]++
-			} else if dir == "d" {
-				x_tail[score]--
-			}
-		}
-		score++
-	}
-
 	if xcor == 30 {
 		xcor = 1
 	}
@@ -142,6 +105,25 @@ func move() {
 	if ycor == 0 {
 		ycor = 29
 	}
+
+	gps_x = append(gps_x, xcor)
+	gps_y = append(gps_y, ycor)
+
+	if xcor == foodX && ycor == foodY {
+		foodAvbl = 0
+		x_tail = append(x_tail, xcor)
+		y_tail = append(y_tail, ycor)
+		if dir == "w" {
+			y_tail[score]++
+		} else if dir == "s" {
+			y_tail[score]--
+		} else if dir == "a" {
+			x_tail[score]++
+		} else if dir == "d" {
+			x_tail[score]--
+		}
+		score++
+	}
 }
 func food() {
 	if foodAvbl == 0 {
@@ -151,16 +133,15 @@ func food() {
 	}
 }
 func main() {
-	
 	ycor = 15
 	xcor = 15
 	for true {
 		food()
-		tail_move()
-		move()
-		input()
 		tools.Clear()
 		draw()
+		input()
+		tail_move()
+		move()
 		time.Sleep(time.Millisecond * 100)
 	}
 }
