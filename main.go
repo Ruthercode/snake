@@ -14,11 +14,12 @@ var (
 	foodAvbl int = 0
 	foodX    int
 	foodY    int
-	score    int = 0
-	x_tail       = make([]int, 1)
-	y_tail       = make([]int, 1)
-	gps_x        = make([]int, 1)
-	gps_y        = make([]int, 1)
+	score    int  = 0
+	x_tail        = make([]int, 1)
+	y_tail        = make([]int, 1)
+	gps_x         = make([]int, 1)
+	gps_y         = make([]int, 1)
+	gameOver bool = false
 )
 
 func tail_move() {
@@ -106,6 +107,12 @@ func move() {
 		ycor = 29
 	}
 
+	for i := 0; i < score; i++ {
+		if xcor == x_tail[i] && ycor == y_tail[i] {
+			gameOver = true
+		}
+	}
+
 	gps_x = append(gps_x, xcor)
 	gps_y = append(gps_y, ycor)
 
@@ -135,7 +142,7 @@ func food() {
 func main() {
 	ycor = 15
 	xcor = 15
-	for true {
+	for !gameOver {
 		food()
 		tools.Clear()
 		draw()
@@ -144,4 +151,13 @@ func main() {
 		move()
 		time.Sleep(time.Millisecond * 100)
 	}
+	fmt.Println(" ")
+	fmt.Println("GAME OVER!")
+	fmt.Println("Press any key to continue ")
+	char, _, err := keyboard.GetSingleKey()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%q\r\n", char)
+	tools.Clear()
 }
