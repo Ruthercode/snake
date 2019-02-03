@@ -7,6 +7,9 @@ import (
 	"time"
 )
 
+const n = 150 // time
+
+// pajiloy gamedev
 var (
 	ycor     int
 	xcor     int
@@ -20,6 +23,7 @@ var (
 	gps_x         = make([]int, 1)
 	gps_y         = make([]int, 1)
 	gameOver bool = false
+	costil   string
 )
 
 func tail_move() {
@@ -72,15 +76,15 @@ func draw() {
 }
 
 func input() {
-
-	char, _, err := keyboard.GetSingleKey()
+	ch, err := tools.GetKey(time.Millisecond * n)
 	if err != nil {
 		panic(err)
 	}
-	dir = string(char)
+	if ch != rune(0) && (string(ch) == "w" || string(ch) == "s" || string(ch) == "d" || string(ch) == "a") {
+		dir = string(ch)
+	}
 }
 
-// not real-time input
 func move() {
 
 	switch dir {
@@ -96,14 +100,11 @@ func move() {
 
 	if xcor == 30 {
 		xcor = 1
-	}
-	if xcor == 0 {
+	} else if xcor == 0 {
 		xcor = 29
-	}
-	if ycor == 30 {
+	} else if ycor == 30 {
 		ycor = 1
-	}
-	if ycor == 0 {
+	} else if ycor == 0 {
 		ycor = 29
 	}
 
@@ -149,7 +150,6 @@ func main() {
 		input()
 		tail_move()
 		move()
-		time.Sleep(time.Millisecond * 100)
 	}
 	fmt.Println(" ")
 	fmt.Println("GAME OVER!")
